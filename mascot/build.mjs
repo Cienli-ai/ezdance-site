@@ -149,10 +149,11 @@ export const POSES = {
 };
 
 // App 圖示／頭貼用的大頭版
-export const avatar = (bg = '#1a1a2e') =>
-  `<rect width="400" height="400" rx="90" fill="${bg}"/>` +
+export const avatar = (bg = '#1a1a2e', rx = 90) =>
+  `<rect width="400" height="400" rx="${rx}" fill="${bg}"/>` +
   `<g transform="translate(-60,-30) scale(1.3)">${paipai({ face: 'happy', shadow: false, legs: false, armL: [104, 250], armR: [296, 250] })}</g>`;
 
+export function buildAll() {
 const files = {};
 for (const [id, pose] of Object.entries(POSES)) files[`paipai-${id}.svg`] = wrap(pose.svg(), pose.vb, `拍拍 PaiPai｜${pose.name}`);
 files['paipai-avatar.svg'] = wrap(avatar(), '0 0 400 400', '拍拍 PaiPai 頭像');
@@ -343,3 +344,5 @@ btns.forEach(function(b){b.addEventListener('click',function(){set(b)})});})();
 `;
 writeFileSync(join(here, 'index.html'), `<!DOCTYPE html>\n<html lang="zh-Hant-TW">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n</head>\n<body>\n${page}</body>\n</html>\n`);
 if (process.env.ARTIFACT_OUT) writeFileSync(process.env.ARTIFACT_OUT, page);
+}
+if (process.argv[1] === fileURLToPath(import.meta.url)) buildAll();
